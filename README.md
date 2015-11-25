@@ -5,7 +5,7 @@ This git repository is used (by me) to document things I have learned about the 
 
 ### Prerequisites
 
-If you want to use this then you'll need to install the [Docker Toolbox](https://www.docker.com/docker-toolbox) first.
+If you want to use this then you'll need to have the [Docker Toolbox](https://www.docker.com/docker-toolbox) installed.  After that, you will also need to build the [elixir_examples](https://github.com/raniemi/elixir_examples) docker image in order to build the phoenix_examples docker image.
 
 ### Getting Started
 
@@ -24,7 +24,7 @@ docker run -it --rm -v "$PWD":/code -w /phoenix raniemi/phoenix_examples mix pho
 
 Run the docker image:
 ```console
-docker run -it --rm --name phoenix_examples -p 4000:4000 -v "$PWD":/code/phoenix_examples -w /code/phoenix_examples raniemi/phoenix_examples npm cache clean && npm install && iex -S mix phoenix.server
+./docker-run npm cache clean && npm install && iex -S mix phoenix.server
 ```
 
 ### Notes
