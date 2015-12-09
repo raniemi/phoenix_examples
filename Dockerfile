@@ -36,14 +36,21 @@ ENV NODE_VERSION 4.2.1
 ENV NPM_VERSION 2.12.0
 ENV NPM_CONFIG_LOGLEVEL info
 
+# dependencies for node-gyp
+RUN apt-get update \
+  && apt-get install -y python python-dev python-pip python-virtualenv \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
- && curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
- && gpg --verify SHASUMS256.txt.asc \
- && grep " node-v$NODE_VERSION-linux-x64.tar.gz\$" SHASUMS256.txt.asc | sha256sum -c - \
- && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
- && rm "node-v$NODE_VERSION-linux-x64.tar.gz" SHASUMS256.txt.asc
+  && curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
+  && gpg --verify SHASUMS256.txt.asc \
+  && grep " node-v$NODE_VERSION-linux-x64.tar.gz\$" SHASUMS256.txt.asc | sha256sum -c - \
+  && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
+  && rm "node-v$NODE_VERSION-linux-x64.tar.gz" SHASUMS256.txt.asc
 
 RUN npm install -g npm@"$NPM_VERSION" \
- && npm cache clear
+  && npm cache clear
+
+EXPOSE 4000
 
 WORKDIR /code

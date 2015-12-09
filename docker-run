@@ -1,9 +1,0 @@
-#!/bin/bash
-ARGS=$@
-OWNER=raniemi
-PROJECT=phoenix_examples
-SRC_DIR=/code
-PORT=4000
-
-REPOSITORY=$OWNER/$PROJECT
-docker run -it --rm --name $PROJECT -p $PORT:$PORT -v "$PWD":$SRC_DIR/$PROJECT -w $SRC_DIR/$PROJECT $REPOSITORY true && eval $ARGS

@@ -7,6 +7,10 @@ defmodule PhoenixExamples.Mixfile do
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
+     
+          # Hex
+     description: description,
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases,
@@ -48,4 +52,22 @@ defmodule PhoenixExamples.Mixfile do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"]]
   end
+  
+    # Hex Package description
+  defp description do
+    """
+    Phoenix Examples is just as it's name suggests.  Please keep in mind that 
+    it's primary purpose is meant for me to learn more about the Phoenix framework and 
+    its surrounding tools.  Perhaps you'll be able to benefit from it as well.
+    """
+  end
+
+  # Hex Package definition
+  defp package do
+    [maintainers: ["Ross Niemi"],
+     licenses: ["Apache 2.0"],
+     links: %{"GitHub" => "https://github.com/raniemi/phoenix_examples"}
+    ]
+  end  
+
 end
