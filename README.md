@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/raniemi/phoenix_examples.svg?branch=master)](https://travis-ci.org/raniemi/phoenix_examples)
+[![Coverage Status](https://coveralls.io/repos/raniemi/phoenix_examples/badge.svg?branch=master&service=github)](https://coveralls.io/github/raniemi/phoenix_examples?branch=master)
+
 Phoenix Examples
 ================
 
