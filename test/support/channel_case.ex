@@ -4,7 +4,7 @@ defmodule PhoenixExamples.ChannelCase do
   channel tests.
 
   Such tests rely on `Phoenix.ChannelTest` and also
-  imports other functionality to make it easier
+  import other functionality to make it easier
   to build and query models.
 
   Finally, if the test case interacts with the database,
@@ -21,8 +21,9 @@ defmodule PhoenixExamples.ChannelCase do
       use Phoenix.ChannelTest
 
       alias PhoenixExamples.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 2]
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
 
 
       # The default endpoint for testing
@@ -31,8 +32,10 @@ defmodule PhoenixExamples.ChannelCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixExamples.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(PhoenixExamples.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixExamples.Repo, {:shared, self()})
     end
 
     :ok

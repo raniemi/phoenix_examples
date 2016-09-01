@@ -11,7 +11,7 @@ If you want to use this then you'll need to have the [Docker Toolbox](https://ww
 
 This Phoenix project was created using [mix](http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html) (relative to your current directory):
 ```console
-docker run -it --rm -v "$PWD":/code -w /phoenix raniemi/phoenix_examples mix phoenix.new /code/phoenix_examples
+docker run -it --rm -v "$PWD":/usr/local/src/phoenix_examples -w /phoenix raniemi/phoenix_examples mix phoenix.new /usr/local/src/phoenix_examples
 ```
 
 ### Usage
@@ -41,16 +41,21 @@ Or alternatively:
 
 Following on the earlier mix example, all you have to do to use the tools installed on [Docker](https://www.docker.com/) is to prefix the same command with `./bin/docker-run`.  For example:
 ```console
-./bin/docker-run mix do deps.get, compile
+./bin/docker-run mix do clean, deps.get, compile
+```
+
+If you want to start up the Phoenix application then you can run the following command:
+```console
+docker-compose up --build
 ```
 
 ### Helpful Commands
 
 As I started working with this project and docker, I quickly became tired typing the `docker-run` prefix constantly (think `bundle exec`), knowing when to specify a MIX_ENV, and having to run post-commands after the fact (i.e. I just ran code coverage and so I now want to see the HTML report).  As a means of convenience, I created some bash scripts in the `mix/` directory. For example:
 
-Run the phoenix.server (on port 4000):
+Run tests (with code coverage):
 ```console
-./mix/phoenix.server
+./mix/test-cover
 ```
 
 NOTE: if you are using docker and not the [Docker Toolbox](https://www.docker.com/docker-toolbox) then you may have to manually port forward 4000 on your VM; otherwise, you won't get the Phoenix landing page.
@@ -61,9 +66,10 @@ NOTE: the following was generated at the time of project creation (need to revis
 
 To start your Phoenix app:
 
-  1. Install dependencies with `mix deps.get`
-  2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  3. Start Phoenix endpoint with `mix phoenix.server`
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Install Node.js dependencies with `npm install`
+  * Start Phoenix endpoint with `mix phoenix.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
@@ -73,6 +79,6 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
   * Official website: http://www.phoenixframework.org/
   * Guides: http://phoenixframework.org/docs/overview
-  * Docs: http://hexdocs.pm/phoenix
+  * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix

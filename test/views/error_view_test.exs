@@ -11,11 +11,11 @@ defmodule PhoenixExamples.ErrorViewTest do
 
   test "render 500.html" do
     assert render_to_string(PhoenixExamples.ErrorView, "500.html", []) ==
-           "Server internal error"
+           "Internal server error"
   end
 
   test "render any other" do
     assert render_to_string(PhoenixExamples.ErrorView, "505.html", []) ==
-           "Server internal error"
+           "Internal server error"
   end
 end

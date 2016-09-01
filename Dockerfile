@@ -8,12 +8,12 @@ MAINTAINER Ross Niemi <dev@lone-cyprus.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 # install Phoenix from source with some previous requirements
-ENV PHOENIX_VERSION 1.0.3
+ENV PHOENIX_VERSION 1.2.1
 RUN git clone https://github.com/phoenixframework/phoenix.git \
  && cd phoenix && git checkout v$PHOENIX_VERSION \
  && mix local.hex --force && mix local.rebar --force \
  && mix do deps.get, compile \
- && mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v$PHOENIX_VERSION/phoenix_new-$PHOENIX_VERSION.ez --force
+ && mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new-$PHOENIX_VERSION.ez --force
 
 # install Node.js and NPM in order to satisfy brunch.io dependencies
 # the snippet below is borrowed from the official nodejs Dockerfile
@@ -28,12 +28,14 @@ RUN set -ex \
     FD3A5288F042B6850C66B31F09FE44734EB7990E \
     71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
     DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
+    C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
+    B9AE9905FFD7803F25714661B63B535A4C206CA9 \
   ; do \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done
 
-ENV NODE_VERSION 4.2.1
-ENV NPM_VERSION 2.12.0
+ENV NODE_VERSION 6.5.0
+ENV NPM_VERSION 3.10.6
 ENV NPM_CONFIG_LOGLEVEL info
 
 # dependencies for node-gyp
@@ -48,9 +50,14 @@ RUN curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x
   && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.gz" SHASUMS256.txt.asc
 
-RUN npm install -g npm@"$NPM_VERSION" \
-  && npm cache clear
+# Fix bug https://github.com/npm/npm/issues/9863
+RUN cd $(npm root -g)/npm \
+  && npm install fs-extra \
+  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs\.rename/fs.move/ ./lib/utils/rename.js
 
 EXPOSE 4000
 
-WORKDIR /code
+WORKDIR /usr/local/src/phoenix_examples
+
+RUN npm install -g npm@"$NPM_VERSION" \
+  && npm cache clear
