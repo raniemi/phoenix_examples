@@ -1,19 +1,9 @@
-FROM raniemi/elixir_examples:latest
+FROM raniemi/elixir:1.3.2_19.0.3_ubuntu_xenial
 
 # Based on 
 #  https://github.com/marcelocg/phoenix-docker
 #  https://hub.docker.com/r/jamesbee/phoenix
 MAINTAINER Ross Niemi <dev@lone-cyprus.com>
-
-ENV DEBIAN_FRONTEND noninteractive
-
-# install Phoenix from source with some previous requirements
-ENV PHOENIX_VERSION 1.2.1
-RUN git clone https://github.com/phoenixframework/phoenix.git \
- && cd phoenix && git checkout v$PHOENIX_VERSION \
- && mix local.hex --force && mix local.rebar --force \
- && mix do deps.get, compile \
- && mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new-$PHOENIX_VERSION.ez --force
 
 # install Node.js and NPM in order to satisfy brunch.io dependencies
 # the snippet below is borrowed from the official nodejs Dockerfile

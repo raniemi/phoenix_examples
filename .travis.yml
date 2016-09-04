@@ -3,8 +3,17 @@ sudo: required
 services:
   - docker
 
+env:
+  DOCKER_COMPOSE_VERSION: 1.8.0
+
 before_install:
-  - ./bin/docker-build
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+before_install:
+  - docker-compose up --build
   - ./bin/docker-run "mix local.rebar --force; mix local.hex --force; mix deps.get"
 
 script:
@@ -12,12 +21,7 @@ script:
 
 after_script:
   - ./bin/docker-run "mix deps.get --only docs; MIX_ENV=docs mix inch.report"
-
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push raniemi/phoenix_examples;
-    fi
+  - docker-compose down
 
 notifications:
   recipients:

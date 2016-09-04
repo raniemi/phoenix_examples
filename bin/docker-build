@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 OWNER=raniemi
 PROJECT=phoenix_examples
 REPOSITORY=$OWNER/$PROJECT
